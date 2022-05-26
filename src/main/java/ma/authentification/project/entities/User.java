@@ -1,6 +1,7 @@
 package ma.authentification.project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
 @Data
 @AllArgsConstructor @NoArgsConstructor @EqualsAndHashCode
 public class User implements Serializable {
@@ -28,7 +28,7 @@ public class User implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)
+    @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.MERGE)
     @JsonIgnore
     private List<Reservation> reservations;
 

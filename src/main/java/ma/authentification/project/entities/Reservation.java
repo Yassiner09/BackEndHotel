@@ -1,5 +1,7 @@
 package ma.authentification.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +14,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Entity
-@Table(name = "reservations")
 @Data @AllArgsConstructor @NoArgsConstructor @EqualsAndHashCode
 public class Reservation implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -25,6 +26,7 @@ public class Reservation implements Serializable {
     private int duree;
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "id_client")
+    //@JsonBackReference(value = "clientReference")
     private Client client;
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "room_id")
@@ -39,8 +41,9 @@ public class Reservation implements Serializable {
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,optional = false,orphanRemoval = true)
     @JoinColumn(name = "id_facture")
     private Facture facture;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "id_user")
+    //@JsonBackReference(value = "userReference")
     private User user;
 
 

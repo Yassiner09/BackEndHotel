@@ -14,7 +14,7 @@ import java.util.Collection;
 public class RoleService {
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     public Collection<Role> findAll(){
         return roleRepository.findAll();

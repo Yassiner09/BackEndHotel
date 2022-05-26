@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "services")
 @Data
 @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 public class Service implements Serializable {
@@ -19,6 +19,7 @@ public class Service implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idService;
     private String name;
-    private String desc;
+    private String description;
     private Double price;
+
 }

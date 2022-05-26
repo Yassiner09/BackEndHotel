@@ -1,5 +1,6 @@
 package ma.authentification.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +10,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "factures")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,5 +21,5 @@ public class Facture implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idFacture;
-    private Double TotalPrice;
+    private Double TotalPrice=0.;
 }

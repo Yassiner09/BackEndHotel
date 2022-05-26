@@ -1,5 +1,4 @@
 package ma.authentification.project.configuration;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import ma.authentification.project.services.JwtService;
 import ma.authentification.project.util.JwtUtil;
@@ -58,4 +57,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
     }
-    }
+}

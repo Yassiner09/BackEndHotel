@@ -1,5 +1,7 @@
 package ma.authentification.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,8 +9,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
-@Entity @Table(name = "room")
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,9 +25,13 @@ public class Room implements Serializable {
     private Integer idRoom;
     private String number;
     private Integer floor;
+    private Boolean availability;
+    private Double price;
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "type_id")
+    //@JsonBackReference
     private Type type;
     private String phoneNumber;
+
 
 }

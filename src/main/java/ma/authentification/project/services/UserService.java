@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 @Transactional
 public class UserService {
@@ -19,9 +21,14 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User addUser(User user){
-        return userRepository.save(user);
+    public List<User> findAll(){
+        return userRepository.findAll();
     }
+
+    public User findUserById(Integer id) throws Exception {
+        return userRepository.findById(id).orElseThrow(()->new Exception("user not found"));
+    }
+
 
     public User registerNewUser(User user) {
         Role role = roleRepository.findByName("User");
@@ -42,6 +49,11 @@ public class UserService {
         user.setPassword(getEncodedPassword(user.getPassword()));
         return userRepository.save(user);
     }
+
+    public void deleteUser(Integer id){
+        userRepository.deleteById(id);
+    }
+
 
 
     public String getEncodedPassword(String password) {

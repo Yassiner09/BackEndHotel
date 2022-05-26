@@ -1,5 +1,7 @@
 package ma.authentification.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,10 +9,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "clients")
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @EqualsAndHashCode
@@ -25,8 +26,10 @@ public class Client implements Serializable {
     private String cin;
     private String nationality;
     private String cardNumber;
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
-    private Set<Reservation> reservations;
+    private Boolean fidelity;
+    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<Reservation> reservations;
 
     //reservations impact
     public void addReservationToClient(Reservation reservation){
