@@ -4,10 +4,10 @@ package ma.authentification.project.controllers;
 import ma.authentification.project.entities.Room;
 import ma.authentification.project.exceptions.RoomException;
 import ma.authentification.project.services.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.server.authentication.RedirectServerAuthenticationEntryPoint;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +16,8 @@ import java.util.List;
 @RequestMapping("/api/room")
 public class RoomController {
 
-    RoomService roomService;
+    @Autowired
+    private RoomService roomService;
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyRole('Admin','User')")
@@ -39,7 +40,7 @@ public class RoomController {
     }
 
 
-    @GetMapping("/find/{floor}")
+    @GetMapping("/find/{availability}")
     @PreAuthorize("hasAnyRole('Admin','User')")
     public ResponseEntity<List<Room>> findRoomsByAvailability(@PathVariable Boolean availability)throws RoomException {
         return new ResponseEntity<>(roomService.findRoomsByAvailability(availability), HttpStatus.OK);

@@ -4,10 +4,10 @@ package ma.authentification.project.controllers;
 import ma.authentification.project.entities.Service;
 import ma.authentification.project.exceptions.ServiceException;
 import ma.authentification.project.services.ServiceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +16,8 @@ import java.util.List;
 @RequestMapping("/api/service")
 public class ServiceController {
 
-    ServiceService serviceService;
+    @Autowired
+    private ServiceService serviceService;
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyRole('Admin','User')")

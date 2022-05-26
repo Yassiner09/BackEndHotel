@@ -4,12 +4,18 @@ import ma.authentification.project.Repositories.TypeRepository;
 import ma.authentification.project.entities.Type;
 import ma.authentification.project.exceptions.TypeException;
 import ma.authentification.project.interfaces.TypeInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
+@Transactional
 public class TypeService implements TypeInterface {
 
-    TypeRepository typeRepository;
+    @Autowired
+    private TypeRepository typeRepository;
 
     @Override
     public List<Type> findAllTypes() throws TypeException {

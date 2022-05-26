@@ -4,6 +4,7 @@ package ma.authentification.project.controllers;
 import ma.authentification.project.entities.Type;
 import ma.authentification.project.exceptions.TypeException;
 import ma.authentification.project.services.TypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,8 @@ import java.util.List;
 @RequestMapping("/api/type")
 public class TypeController {
 
-    TypeService typeService;
+    @Autowired
+    private TypeService typeService;
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyRole('Admin','User')")

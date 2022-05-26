@@ -2,15 +2,13 @@ package ma.authentification.project.services;
 
 import ma.authentification.project.Repositories.FactureRepository;
 import ma.authentification.project.entities.Facture;
-import ma.authentification.project.entities.Reservation;
 import ma.authentification.project.exceptions.FactureException;
-import ma.authentification.project.exceptions.ReservationException;
 import ma.authentification.project.interfaces.FactureInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
+
 import java.util.List;
 
 @Service
@@ -18,8 +16,6 @@ import java.util.List;
 public class FactureService implements FactureInterface {
     @Autowired
     private FactureRepository factureRepository;
-
-    private ReservationService reservationService;
 
     @Override
     public List<Facture> findAllFactures() throws FactureException {
@@ -42,7 +38,8 @@ public class FactureService implements FactureInterface {
 
     @Override
     public void deleteFacture(Integer id) throws FactureException {
-
+        findFactureById(id);
+        factureRepository.deleteById(id);
     }
 
 }
