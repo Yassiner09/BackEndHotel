@@ -1,6 +1,8 @@
 package ma.authentification.project.services;
 
 import ma.authentification.project.Repositories.ServiceRepository;
+import ma.authentification.project.exceptions.ServiceException;
+import ma.authentification.project.interfaces.ServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,27 +11,42 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ServiceService {
+public class ServiceService implements ServiceInterface {
     @Autowired
     private ServiceRepository serviceRepository;
 
+    @Override
     public List<ma.authentification.project.entities.Service> findAllServices(){
         return serviceRepository.findAll();
     }
-    public ma.authentification.project.entities.Service findServiceById(Integer id) throws Exception{
-        return serviceRepository.findById(id).orElseThrow(()->new Exception("wtf"));
+    @Override
+    public ma.authentification.project.entities.Service findServiceById(Integer id) throws ServiceException{
+        return serviceRepository.findById(id).orElseThrow(()->new ServiceException("Service not found !"));
     }
 
-    public ma.authentification.project.entities.Service addService(ma.authentification.project.entities.Service service){
+    @Override
+    public ma.authentification.project.entities.Service findServiceByName(String name) throws ServiceException {
+        return serviceRepository.findByName(name).orElseThrow(()->new org.hibernate.service.spi.ServiceException("Service with "+name+" as a name not found !"));
+    }
+
+    @Override
+    public List<ma.authentification.project.entities.Service> findServicesByPrice(Double price) throws ServiceException {
+        return serviceRepository.findAllByPrice(price);
+    }
+
+    @Override
+    public ma.authentification.project.entities.Service saveService(ma.authentification.project.entities.Service service)throws ServiceException{
         return serviceRepository.save(service);
     }
-    public ma.authentification.project.entities.Service updateService(ma.authentification.project.entities.Service service){
+     @Override
+    public ma.authentification.project.entities.Service updateService(ma.authentification.project.entities.Service service)throws ServiceException{
         return serviceRepository.save(service);
     }
-    public void deleteService(Integer id){
+
+    @Override
+    public void deleteServiceById(Integer id) throws ServiceException {
         serviceRepository.deleteById(id);
     }
-
 
 
 }

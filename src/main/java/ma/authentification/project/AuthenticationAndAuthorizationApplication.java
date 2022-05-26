@@ -75,7 +75,7 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 		serviceRepository.save(service);
 
 		Reservation reservation=new Reservation(null, LocalDate.of(2022,12,21), LocalTime.of(12,00),12,client1,r1,new ArrayList<>(),new Facture(),u);
-		reservationService.addReservation(reservation);
+		reservationService.saveReservation(reservation);
 		reservationService.updateFacture(reservation);
 
 
