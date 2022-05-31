@@ -1,11 +1,10 @@
 package ma.authentification.project.services;
 
+import lombok.AllArgsConstructor;
 import ma.authentification.project.Repositories.ClientRepository;
 import ma.authentification.project.entities.Client;
 import ma.authentification.project.exceptions.ClientException;
 import ma.authentification.project.interfaces.ClientInterface;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.ClientHttpRequestInitializer;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,9 +12,10 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class ClientService implements ClientInterface {
 
-    @Autowired
+    //@Autowired
     private ClientRepository clientRepository;
 
     public List<Client> findAllClients(){
@@ -26,30 +26,37 @@ public class ClientService implements ClientInterface {
     }
 
     @Override
-    public List<Client> findClientsByCin(String cin)throws ClientException {
-        return clientRepository.findAllByCin(cin);
+    public Client findClientByCin(String cin)throws ClientException {
+        return clientRepository.findByCin(cin).orElseThrow(()->new ClientException("Client with "+cin+"not found !"));
     }
 
     @Override
     public List<Client> findClientsByLastName(String lastname)throws ClientException {
-        return clientRepository.findAllByLastName(lastname);
+        List<Client> clients = clientRepository.findAllByLastName(lastname);
+        if(clients.isEmpty())
+            throw new ClientException("Client with lastname: "+lastname+" not found !");
+        return clients;
     }
 
     @Override
     public Client saveClient(Client client)throws ClientException {
+        if(findAllClients().contains(client))
+            throw new ClientException("Client already exists !");
         return clientRepository.save(client);
     }
 
     @Override
-    public Client updateClient(Client client)throws ClientException {
-        return clientRepository.save(client);
+    public Client updateClient(Client client) throws ClientException {
+        Client clt=findClientById(client.getIdClt());
+        return clientRepository.save(clt);
     }
 
     @Override
     public void deleteClientById(Integer id) throws ClientException{
-        Client client=clientRepository.findById(id).get();
+        Client client=clientRepository.findById(id).orElseThrow(()->new ClientException("Client with "+id+"not found !"));
         clientRepository.delete(client);
     }
+
 
 
 

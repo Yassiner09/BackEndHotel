@@ -1,7 +1,5 @@
 package ma.authentification.project.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,7 +30,7 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "reservation_service",
     joinColumns = @JoinColumn(name = "id_reservation"),
     inverseJoinColumns = @JoinColumn(name = "id_service"))

@@ -1,6 +1,7 @@
 package ma.authentification.project.services;
 
 import ma.authentification.project.Repositories.ReservationRepository;
+import ma.authentification.project.entities.Fidelity;
 import ma.authentification.project.entities.Reservation;
 import ma.authentification.project.entities.Room;
 import ma.authentification.project.exceptions.ReservationException;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.module.ResolutionException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -73,15 +73,23 @@ public class ReservationService implements ReservationInterface {
     }
 
     public void deleteReservationById(Integer id) throws ReservationException {
-        this.findReservationById(id);
+        Reservation reservation=findReservationById(id);
+        reservation.getRoom().setAvailability(true);
         reservationRepository.deleteById(id);
     }
 
     public Double totalPrice(Reservation reservation) throws ReservationException {
         totalPrice=0.;
         Reservation res = reservationRepository.findById(reservation.getIdRes()).orElseThrow(()->new ReservationException("Reservation not found !"));
-        totalPrice+=res.getRoom().getPrice();
-        totalPrice+=res.getServices().stream().map(s->s.getPrice()).mapToDouble(s->s).sum();
+        Fidelity fidelity=reservation.getClient().getFidelity();
+        if(fidelity!=null){
+            totalPrice+=reservation.getRoom().getPrice() - (reservation.getRoom().getPrice() * fidelity.getPercentageRoom() / 100);
+            totalPrice+=res.getServices().stream().map(s->s.getPrice() - (s.getPrice() * fidelity.getPercentageServices())).mapToDouble(s->s).sum();
+        }
+        else{
+            totalPrice+=reservation.getRoom().getPrice();
+            totalPrice+=res.getServices().stream().map(s->s.getPrice()).mapToDouble(s->s).sum();
+        }
         return totalPrice;
     }
     public void updateFacture(Reservation reservation) throws ReservationException{

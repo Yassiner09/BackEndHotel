@@ -55,7 +55,9 @@ public class ReservationController {
     @PostMapping("add")
     @PreAuthorize("hasAnyRole('Admin')")
     public ResponseEntity<Reservation> saveReservation(@RequestBody Reservation reservation) throws Exception {
-        return new ResponseEntity<>(reservationService.saveReservation(reservation), HttpStatus.CREATED);
+        Reservation res = reservationService.saveReservation(reservation);
+        reservationService.updateFacture(res);
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @PutMapping("update")

@@ -30,25 +30,29 @@ public class ClientController {
     }
     @GetMapping("cin/{cin}")
     @PreAuthorize("hasAnyRole('Admin','User')")
-    public ResponseEntity<List<Client>> findClientsByCin(@PathVariable String cin)throws ClientException{
-        return new ResponseEntity<>(clientService.findClientsByCin(cin), HttpStatus.OK);
+    public ResponseEntity<Client> findClientsByCin(@PathVariable String cin) throws ClientException{
+        return new ResponseEntity<>(clientService.findClientByCin(cin), HttpStatus.OK);
     }
     @GetMapping("lastname/{lastname}")
     @PreAuthorize("hasAnyRole('Admin','User')")
-    public ResponseEntity<List<Client>> findClientsByLastName(@PathVariable String lastname)throws ClientException{
+    public ResponseEntity<List<Client>> findClientsByLastName(@PathVariable String lastname) throws ClientException{
          return new ResponseEntity<>(clientService.findClientsByLastName(lastname), HttpStatus.OK);
 
      }
     @PostMapping("/save")
     @PreAuthorize("hasAnyRole('Admin')")
-    public ResponseEntity<Client> saveClient(@RequestBody Client client)throws ClientException{
+    public ResponseEntity<Client> saveClient(@RequestBody Client client) throws ClientException{
         return new ResponseEntity<>(clientService.saveClient(client), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAnyRole('Admin')")
     public ResponseEntity<Client> updateClient(@RequestBody Client client)throws ClientException{
-         return new ResponseEntity<>(clientService.updateClient(client), HttpStatus.OK);
+         if(findClientById(client.getIdClt()).getStatusCode().equals(HttpStatus.OK))
+             return new ResponseEntity<>(clientService.updateClient(client), HttpStatus.OK);
+
+         else
+             throw new ClientException("Client with "+client.getIdClt()+"not found !");
     }
 
     @DeleteMapping("/delete/{id}")

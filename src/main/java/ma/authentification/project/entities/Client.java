@@ -1,7 +1,6 @@
 package ma.authentification.project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +25,9 @@ public class Client implements Serializable {
     private String cin;
     private String nationality;
     private String cardNumber;
-    private Boolean fidelity;
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "fidelity_id")
+    private Fidelity fidelity;
     @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<Reservation> reservations;

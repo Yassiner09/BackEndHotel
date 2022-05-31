@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+
 
 @SpringBootApplication
 public class AuthenticationAndAuthorizationApplication implements CommandLineRunner {
@@ -36,6 +36,8 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 	ClientRepository clientRepository;
 	@Autowired
 	ServiceRepository serviceRepository;
+	@Autowired
+	FidelityRepository fidelityRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AuthenticationAndAuthorizationApplication.class, args);
@@ -65,8 +67,13 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 		Room r2=new Room(null,"101",12,true,2000.,t1,"+21233223333");
 		roomRepository.save(r2);
 
-		Client client1=new Client(null,"yassine","elh","AS2433","marocain","23134355321121",false,new ArrayList<>());
+		Fidelity fidelity=new Fidelity(null,"fidelity1",15.,10.,new ArrayList<>());
+		fidelityRepository.save(fidelity);
+
+		Client client1=new Client(null,"yassine","elh","AS2433","marocain","23134355321121",fidelity,new ArrayList<>());
+		Client client2=new Client(null,"yass","hihi","AS4433","marocain","23333333333333",null,new ArrayList<>());
 		clientRepository.save(client1);
+		clientRepository.save(client2);
 
 		Service service=new Service();
 		service.setDescription("wow");
@@ -78,10 +85,9 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 		reservationService.saveReservation(reservation);
 		reservationService.updateFacture(reservation);
 
-
-
-
-
+		Reservation reservation2=new Reservation(null, LocalDate.of(2023,9,11), LocalTime.of(12,00),12,client2,r2,new ArrayList<>(),new Facture(),u);
+		reservationService.saveReservation(reservation2);
+		reservationService.updateFacture(reservation2);
 
 
 	}
