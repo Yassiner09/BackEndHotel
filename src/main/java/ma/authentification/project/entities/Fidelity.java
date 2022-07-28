@@ -17,8 +17,11 @@ public class Fidelity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column(unique = true,nullable = false)
     private String name;
+    @Column(nullable = false)
     private Double percentageRoom;
+    @Column(nullable = false)
     private Double percentageServices;
 
     @OneToMany(mappedBy = "fidelity",cascade = CascadeType.MERGE,orphanRemoval = true)

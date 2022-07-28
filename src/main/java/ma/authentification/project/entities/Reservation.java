@@ -26,11 +26,11 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "id_client")
     //@JsonBackReference(value = "clientReference")
     private Client client;
-    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH},optional = false)
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "reservation_service",
     joinColumns = @JoinColumn(name = "id_reservation"),
     inverseJoinColumns = @JoinColumn(name = "id_service"))

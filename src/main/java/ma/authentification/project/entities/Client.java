@@ -20,10 +20,15 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idClt;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(unique = true,nullable = false)
     private String cin;
+    @Column(nullable = false)
     private String nationality;
+    @Column(unique = true,nullable = false)
     private String cardNumber;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "fidelity_id")

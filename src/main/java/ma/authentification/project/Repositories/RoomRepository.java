@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Integer> {
 
-    public List<Room> findAllByFloor(Integer floor);
+    public List<Room> findAllByFloors(Integer floor);
 
     public List<Room> findAllByAvailability(Boolean availability) ;
 

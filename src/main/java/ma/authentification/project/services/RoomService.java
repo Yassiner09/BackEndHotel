@@ -25,12 +25,13 @@ public class RoomService implements RoomInterface {
     }
 
     @Override
-    public List<Room> findRoomsByFloor(Integer floor) throws RoomException {
-        return roomRepository.findAllByFloor(floor);
+    public List<Room> findRoomsByFloors(Integer floor) throws RoomException {
+        return roomRepository.findAllByFloors(floor);
     }
 
     @Override
     public List<Room> findRoomsByAvailability(Boolean availability) throws RoomException {
+        //need to specify the date
         return roomRepository.findAllByAvailability(availability);
     }
 

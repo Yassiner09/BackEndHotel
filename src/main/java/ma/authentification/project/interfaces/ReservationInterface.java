@@ -1,6 +1,7 @@
 package ma.authentification.project.interfaces;
 
 import ma.authentification.project.entities.Reservation;
+import ma.authentification.project.entities.Room;
 import ma.authentification.project.exceptions.ReservationException;
 
 import java.time.LocalDate;

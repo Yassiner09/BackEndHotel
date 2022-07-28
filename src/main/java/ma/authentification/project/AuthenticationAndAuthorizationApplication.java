@@ -61,11 +61,22 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 		t1.setDescription("wow");
 		typeRepository.save(t1);
 
-		Room r1=new Room(null,"100",12,true,1500.,t1,"+21233333332");
+		Type t2=new Type();
+		t2.setName("simple");
+		t2.setDescription("miw");
+		typeRepository.save(t2);
+
+		Room r1=new Room(null,"100",12,true,1500.,t1,"+21233333332",new ArrayList<Reservation>());
 		roomRepository.save(r1);
 
-		Room r2=new Room(null,"101",12,true,2000.,t1,"+21233223333");
+		Room r2=new Room(null,"101",12,true,2000.,t1,"+21233223333",new ArrayList<Reservation>());
 		roomRepository.save(r2);
+
+		Room r3=new Room(null,"112",2,true,2000.,t1,"+212374939293",new ArrayList<Reservation>());
+		roomRepository.save(r3);
+
+		Room r4=new Room(null,"106",4,true,750.,t2,"+212032839233",new ArrayList<Reservation>());
+		roomRepository.save(r4);
 
 		Fidelity fidelity=new Fidelity(null,"fidelity1",15.,10.,new ArrayList<>());
 		fidelityRepository.save(fidelity);
@@ -88,6 +99,7 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 		Reservation reservation2=new Reservation(null, LocalDate.of(2023,9,11), LocalTime.of(12,00),12,client2,r2,new ArrayList<>(),new Facture(),u);
 		reservationService.saveReservation(reservation2);
 		reservationService.updateFacture(reservation2);
+
 
 
 	}

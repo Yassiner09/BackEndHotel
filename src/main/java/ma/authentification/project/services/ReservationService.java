@@ -31,9 +31,10 @@ public class ReservationService implements ReservationInterface {
         return reservationRepository.findAll();
     }
 
-    public Reservation updateReservation(Reservation reservation) throws Exception,ReservationException {
+    public Reservation updateReservation(Reservation reservation
+    ) throws Exception,ReservationException {
         Reservation res=findReservationById(reservation.getIdRes());
-        Room room = roomService.findRoomById(reservation.getRoom().getIdRoom());
+        Room room = roomService.findRoomById(reservation.getRoom().getRoomId());
         if(res.getRoom()!=reservation.getRoom()){
             room.setAvailability(false);
             reservation.setRoom(room);
@@ -64,12 +65,15 @@ public class ReservationService implements ReservationInterface {
 
     @Override
     public Reservation saveReservation(Reservation reservation) throws ReservationException, RoomException {
-        Room room = roomService.findRoomById(reservation.getRoom().getIdRoom());
+        Room room = roomService.findRoomById(reservation.getRoom().getRoomId());
         if(reservation.getRoom().getAvailability()!=false){
             room.setAvailability(false);
             reservation.setRoom(room);
+            return reservationRepository.save(reservation);
         }
-        return reservationRepository.save(reservation);
+        else{
+            throw new RoomException("Room is not available");
+        }
     }
 
     public void deleteReservationById(Integer id) throws ReservationException {
@@ -83,11 +87,11 @@ public class ReservationService implements ReservationInterface {
         Reservation res = reservationRepository.findById(reservation.getIdRes()).orElseThrow(()->new ReservationException("Reservation not found !"));
         Fidelity fidelity=reservation.getClient().getFidelity();
         if(fidelity!=null){
-            totalPrice+=reservation.getRoom().getPrice() - (reservation.getRoom().getPrice() * fidelity.getPercentageRoom() / 100);
-            totalPrice+=res.getServices().stream().map(s->s.getPrice() - (s.getPrice() * fidelity.getPercentageServices())).mapToDouble(s->s).sum();
+            totalPrice+=(reservation.getRoom().getPrice() - (reservation.getRoom().getPrice() * fidelity.getPercentageRoom() / 100)) * res.getDuree();
+            totalPrice+=res.getServices().stream().map(s->s.getPrice() - (s.getPrice() * fidelity.getPercentageServices() / 100)).mapToDouble(s->s).sum();
         }
         else{
-            totalPrice+=reservation.getRoom().getPrice();
+            totalPrice+=reservation.getRoom().getPrice() * res.getDuree();
             totalPrice+=res.getServices().stream().map(s->s.getPrice()).mapToDouble(s->s).sum();
         }
         return totalPrice;
@@ -98,6 +102,7 @@ public class ReservationService implements ReservationInterface {
     }
 
     public void addServiceToReservation(Integer idSer,Integer idRes) throws ReservationException, ServiceException {
+        //add log file
         Reservation reservation=findReservationById(idRes);
         ma.authentification.project.entities.Service service=serviceService.findServiceById(idSer);
         reservation.addServiceToReservation(service);
@@ -106,6 +111,7 @@ public class ReservationService implements ReservationInterface {
 
     @Override
     public void removeServiceFromReservation(Integer idSer, Integer idRes) throws ReservationException,ServiceException {
+
         Reservation reservation=findReservationById(idRes);
         ma.authentification.project.entities.Service service=serviceService.findServiceById(idSer);
         reservation.removeServiceFromReservation(service);

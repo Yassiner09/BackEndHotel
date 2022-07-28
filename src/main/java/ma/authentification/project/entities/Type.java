@@ -1,7 +1,6 @@
 package ma.authentification.project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,10 +18,12 @@ public class Type implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idType;
+    @Column(unique = true,nullable = false)
     private String name;
+    @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "type",orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "types",orphanRemoval = true,cascade = CascadeType.ALL)
     //@JsonManagedReference
     @JsonIgnore
     private List<Room> rooms;

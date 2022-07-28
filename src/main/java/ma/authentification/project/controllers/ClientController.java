@@ -1,9 +1,9 @@
 package ma.authentification.project.controllers;
 
+import lombok.AllArgsConstructor;
 import ma.authentification.project.entities.Client;
 import ma.authentification.project.exceptions.ClientException;
 import ma.authentification.project.services.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,9 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/client")
+@AllArgsConstructor
+@CrossOrigin
 public class ClientController {
 
-    @Autowired
     private ClientService clientService;
 
      @GetMapping("/all")
@@ -61,6 +62,7 @@ public class ClientController {
          clientService.deleteClientById(id);
          return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 
 

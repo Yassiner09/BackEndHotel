@@ -19,7 +19,13 @@ public class RoleService {
     public Collection<Role> findAll(){
         return roleRepository.findAll();
     }
+    public Role findByIdRole(Integer id){
+        return roleRepository.findByIdRole(id);
+    }
     public Role addRole(Role role) {
+        return roleRepository.save(role);
+    }
+    public Role updateRole(Role role) {
         return roleRepository.save(role);
     }
     public void deleteRole(Integer id){

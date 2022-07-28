@@ -3,6 +3,7 @@ package ma.authentification.project.services;
 import lombok.AllArgsConstructor;
 import ma.authentification.project.Repositories.ClientRepository;
 import ma.authentification.project.entities.Client;
+import ma.authentification.project.entities.Reservation;
 import ma.authentification.project.exceptions.ClientException;
 import ma.authentification.project.interfaces.ClientInterface;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,10 @@ public class ClientService implements ClientInterface {
         clientRepository.delete(client);
     }
 
+    public void addReservationToClient(Integer id, Reservation reservation) throws ClientException {
+        Client client=findClientById(id);
+        client.getReservations().add(reservation);
+    }
 
 
 

@@ -11,7 +11,7 @@ public interface RoomInterface {
 
     public Room findRoomById(Integer id) throws RoomException;
 
-    public List<Room> findRoomsByFloor(Integer floor) throws RoomException;
+    public List<Room> findRoomsByFloors(Integer floor) throws RoomException;
 
     public  List<Room> findRoomsByAvailability(Boolean availability)throws RoomException;
 

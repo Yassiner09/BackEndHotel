@@ -24,9 +24,17 @@ public class UserService {
     public List<User> findAll(){
         return userRepository.findAll();
     }
+    public List<User> findByRoles(Role role){
+        Role role1=roleRepository.findByIdRole(role.getIdRole());
+        return userRepository.findByRoles(role1);
+    }
 
     public User findUserById(Integer id) throws Exception {
         return userRepository.findById(id).orElseThrow(()->new Exception("user not found"));
+    }
+
+    public User findUserByUsername(String username) throws Exception {
+        return userRepository.findByUsername(username).orElseThrow(()->new Exception("user not found"));
     }
 
 
@@ -58,5 +66,18 @@ public class UserService {
 
     public String getEncodedPassword(String password) {
         return passwordEncoder.encode(password);
+    }
+    public Boolean matchPassword(String password, String encodedPassword) {
+        return passwordEncoder.matches(password, encodedPassword);
+    }
+
+    public void changePassword(String username, String password, String newPassword) throws Exception {
+        User user = findUserByUsername(username);
+        if (matchPassword(password, user.getPassword())) {
+            user.setPassword(getEncodedPassword(newPassword));
+            userRepository.save(user);
+        } else {
+            throw new Exception("password is incorrect");
+        }
     }
 }
