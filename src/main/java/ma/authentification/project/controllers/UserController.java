@@ -7,6 +7,7 @@ import ma.authentification.project.entities.User;
 import ma.authentification.project.services.RoleService;
 import ma.authentification.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +43,7 @@ public class UserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('Admin')")
+    @Cacheable
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.findAll(), OK);
     }

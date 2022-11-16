@@ -30,10 +30,10 @@ public class Client implements Serializable {
     private String nationality;
     @Column(unique = true,nullable = false)
     private String cardNumber;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fidelity_id")
     private Fidelity fidelity;
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "client",cascade = {CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Reservation> reservations;
 

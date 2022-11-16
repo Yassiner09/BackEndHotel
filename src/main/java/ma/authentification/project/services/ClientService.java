@@ -41,15 +41,12 @@ public class ClientService implements ClientInterface {
 
     @Override
     public Client saveClient(Client client)throws ClientException {
-        if(findAllClients().contains(client))
-            throw new ClientException("Client already exists !");
         return clientRepository.save(client);
     }
 
     @Override
     public Client updateClient(Client client) throws ClientException {
-        Client clt=findClientById(client.getIdClt());
-        return clientRepository.save(clt);
+        return clientRepository.save(client);
     }
 
     @Override

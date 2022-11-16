@@ -78,11 +78,17 @@ public class AuthenticationAndAuthorizationApplication implements CommandLineRun
 		Room r4=new Room(null,"106",4,true,750.,t2,"+212032839233",new ArrayList<Reservation>());
 		roomRepository.save(r4);
 
+
+		Fidelity fidelity1=new Fidelity(null,"aucune",0.,0.,new ArrayList<>());
+		fidelityRepository.save(fidelity1);
+
 		Fidelity fidelity=new Fidelity(null,"fidelity1",15.,10.,new ArrayList<>());
 		fidelityRepository.save(fidelity);
 
+
+
 		Client client1=new Client(null,"yassine","elh","AS2433","marocain","23134355321121",fidelity,new ArrayList<>());
-		Client client2=new Client(null,"yass","hihi","AS4433","marocain","23333333333333",null,new ArrayList<>());
+		Client client2=new Client(null,"yass","hihi","AS4433","marocain","23333333333333",fidelity1,new ArrayList<>());
 		clientRepository.save(client1);
 		clientRepository.save(client2);
 

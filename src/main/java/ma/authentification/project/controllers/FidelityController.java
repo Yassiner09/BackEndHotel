@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fidelity")
+@RequestMapping("api/fidelity")
 @AllArgsConstructor
 @CrossOrigin
 public class FidelityController {

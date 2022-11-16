@@ -24,7 +24,7 @@ public class Fidelity implements Serializable {
     @Column(nullable = false)
     private Double percentageServices;
 
-    @OneToMany(mappedBy = "fidelity",cascade = CascadeType.MERGE,orphanRemoval = true)
+    @OneToMany(mappedBy = "fidelity",orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Client> clients;
 }

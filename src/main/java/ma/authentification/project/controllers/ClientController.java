@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import ma.authentification.project.entities.Client;
 import ma.authentification.project.exceptions.ClientException;
 import ma.authentification.project.services.ClientService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,11 +51,7 @@ public class ClientController {
     @PutMapping("/update")
     @PreAuthorize("hasAnyRole('Admin')")
     public ResponseEntity<Client> updateClient(@RequestBody Client client)throws ClientException{
-         if(findClientById(client.getIdClt()).getStatusCode().equals(HttpStatus.OK))
-             return new ResponseEntity<>(clientService.updateClient(client), HttpStatus.OK);
-
-         else
-             throw new ClientException("Client with "+client.getIdClt()+"not found !");
+         return new ResponseEntity<>(clientService.updateClient(client), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
