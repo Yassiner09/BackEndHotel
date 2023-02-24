@@ -1,11 +1,11 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.UserRepository;
 import ma.authentification.project.dto.JwtRequest;
 import ma.authentification.project.dto.JwtResponse;
 import ma.authentification.project.entities.User;
 import ma.authentification.project.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -22,15 +22,16 @@ import java.util.Set;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class JwtService implements UserDetailsService {
-    @Autowired
-    private JwtUtil jwtUtil;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final UserRepository userRepository;
+
+
+    private final AuthenticationManager authenticationManager;
 
     public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception {
         String userName = jwtRequest.getUsername();
@@ -61,9 +62,7 @@ public class JwtService implements UserDetailsService {
 
     private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
         return authorities;
     }
 

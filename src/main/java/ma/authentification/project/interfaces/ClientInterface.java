@@ -2,7 +2,6 @@ package ma.authentification.project.interfaces;
 
 import ma.authentification.project.entities.Client;
 import ma.authentification.project.exceptions.ClientException;
-import org.apache.catalina.connector.ClientAbortException;
 
 import java.util.List;
 

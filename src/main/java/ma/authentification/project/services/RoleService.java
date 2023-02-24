@@ -1,8 +1,8 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.RoleRepository;
 import ma.authentification.project.entities.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,10 +11,9 @@ import java.util.Collection;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class RoleService {
-
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     public Collection<Role> findAll(){
         return roleRepository.findAll();

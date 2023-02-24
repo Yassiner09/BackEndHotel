@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import ma.authentification.project.entities.Client;
 import ma.authentification.project.exceptions.ClientException;
 import ma.authentification.project.services.ClientService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +40,7 @@ public class ClientController {
          return new ResponseEntity<>(clientService.findClientsByLastName(lastname), HttpStatus.OK);
 
      }
-    @PostMapping("/save")
+    @PostMapping(value="/save",consumes = "application/json",produces = "application/json")
     @PreAuthorize("hasAnyRole('Admin')")
     public ResponseEntity<Client> saveClient(@RequestBody Client client) throws ClientException{
         return new ResponseEntity<>(clientService.saveClient(client), HttpStatus.CREATED);

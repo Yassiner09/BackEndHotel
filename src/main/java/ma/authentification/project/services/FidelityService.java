@@ -1,9 +1,9 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.FidelityRepository;
 import ma.authentification.project.entities.Fidelity;
 import ma.authentification.project.exceptions.FidelityException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,9 +11,9 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FidelityService {
-    @Autowired
-    private FidelityRepository fidelityRepository;
+    private final FidelityRepository fidelityRepository;
 
     public List<Fidelity> getAllFidelities() {
         return fidelityRepository.findAll();

@@ -1,10 +1,10 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.TypeRepository;
 import ma.authentification.project.entities.Type;
 import ma.authentification.project.exceptions.TypeException;
 import ma.authentification.project.interfaces.TypeInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,13 +12,14 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class TypeService implements TypeInterface {
 
-    @Autowired
-    private TypeRepository typeRepository;
+
+    private final TypeRepository typeRepository;
 
     @Override
-    public List<Type> findAllTypes() throws TypeException {
+    public List<Type> findAllTypes() {
         return typeRepository.findAll();
     }
 
@@ -33,17 +34,17 @@ public class TypeService implements TypeInterface {
     }
 
     @Override
-    public Type saveType(Type type) throws TypeException {
+    public Type saveType(Type type) {
         return typeRepository.save(type);
     }
 
     @Override
-    public Type updateType(Type type) throws TypeException {
+    public Type updateType(Type type) {
         return typeRepository.save(type);
     }
 
     @Override
-    public void deleteTypeById(Integer id) throws TypeException {
+    public void deleteTypeById(Integer id) {
         typeRepository.deleteById(id);
     }
 }

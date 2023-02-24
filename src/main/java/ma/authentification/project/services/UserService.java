@@ -1,10 +1,10 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.RoleRepository;
 import ma.authentification.project.Repositories.UserRepository;
 import ma.authentification.project.entities.Role;
 import ma.authentification.project.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +13,14 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+   
+    private final UserRepository userRepository;
+    
+    private final RoleRepository roleRepository;
+    
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> findAll(){
         return userRepository.findAll();

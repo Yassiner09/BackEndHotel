@@ -1,10 +1,10 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.FactureRepository;
 import ma.authentification.project.entities.Facture;
 import ma.authentification.project.exceptions.FactureException;
 import ma.authentification.project.interfaces.FactureInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,12 +13,12 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FactureService implements FactureInterface {
-    @Autowired
-    private FactureRepository factureRepository;
+    private final FactureRepository factureRepository;
 
     @Override
-    public List<Facture> findAllFactures() throws FactureException {
+    public List<Facture> findAllFactures()  {
         return factureRepository.findAll();
     }
 
@@ -29,10 +29,10 @@ public class FactureService implements FactureInterface {
     }
 
 
-    public Facture saveFacture(Facture facture)throws FactureException{
+    public Facture saveFacture(Facture facture){
         return factureRepository.save(facture);
     }
-    public Facture updateFacture(Facture facture)throws FactureException{
+    public Facture updateFacture(Facture facture){
         return factureRepository.save(facture);
     }
 

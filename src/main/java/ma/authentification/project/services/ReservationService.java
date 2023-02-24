@@ -1,5 +1,6 @@
 package ma.authentification.project.services;
 
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.Repositories.ReservationRepository;
 import ma.authentification.project.entities.Fidelity;
 import ma.authentification.project.entities.Reservation;
@@ -8,7 +9,6 @@ import ma.authentification.project.exceptions.ReservationException;
 import ma.authentification.project.exceptions.RoomException;
 import ma.authentification.project.exceptions.ServiceException;
 import ma.authentification.project.interfaces.ReservationInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,21 +18,20 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ReservationService implements ReservationInterface {
-    private Double totalPrice;
-    @Autowired
-    private ReservationRepository reservationRepository;
-    @Autowired
-    private RoomService roomService;
 
-    @Autowired
-    private ServiceService serviceService;
+    private final ReservationRepository reservationRepository;
+
+    private final RoomService roomService;
+
+    private final ServiceService serviceService;
     public List<Reservation> findAllReservations(){
         return reservationRepository.findAll();
     }
 
     public Reservation updateReservation(Reservation reservation
-    ) throws Exception,ReservationException {
+    ) throws Exception {
         Reservation res=findReservationById(reservation.getIdRes());
         Room room = roomService.findRoomById(reservation.getRoom().getRoomId());
         if(res.getRoom()!=reservation.getRoom()){
@@ -48,25 +47,25 @@ public class ReservationService implements ReservationInterface {
     }
 
     @Override
-    public List<Reservation> findReservationsByDateBetween(LocalDate debutDate, LocalDate finalDate)throws ReservationException {
+    public List<Reservation> findReservationsByDateBetween(LocalDate debutDate, LocalDate finalDate) {
         return reservationRepository.findAllByDateBetween(debutDate,finalDate);
     }
 
     @Override
-    public List<Reservation> findReservationsByDateAndTimeBetween(LocalDate date, LocalTime beginTime, LocalTime endTime)throws ReservationException {
+    public List<Reservation> findReservationsByDateAndTimeBetween(LocalDate date, LocalTime beginTime, LocalTime endTime) {
         return reservationRepository.findAllByDateAndTimeBetween(date,beginTime,endTime);
     }
 
     @Override
-    public List<Reservation> findReservationsByDuree(Integer duree) throws ReservationException {
+    public List<Reservation> findReservationsByDuree(Integer duree) {
         return  reservationRepository.findAllByDuree(duree);
 
     }
 
     @Override
-    public Reservation saveReservation(Reservation reservation) throws ReservationException, RoomException {
+    public Reservation saveReservation(Reservation reservation) throws RoomException {
         Room room = roomService.findRoomById(reservation.getRoom().getRoomId());
-        if(reservation.getRoom().getAvailability()!=false){
+        if(reservation.getRoom().getAvailability()){
             room.setAvailability(false);
             reservation.setRoom(room);
             return reservationRepository.save(reservation);
@@ -83,16 +82,16 @@ public class ReservationService implements ReservationInterface {
     }
 
     public Double totalPrice(Reservation reservation) throws ReservationException {
-        totalPrice=0.;
+        double totalPrice = 0.;
         Reservation res = reservationRepository.findById(reservation.getIdRes()).orElseThrow(()->new ReservationException("Reservation not found !"));
         Fidelity fidelity=reservation.getClient().getFidelity();
         if(fidelity!=null){
-            totalPrice+=(reservation.getRoom().getPrice() - (reservation.getRoom().getPrice() * fidelity.getPercentageRoom() / 100)) * res.getDuree();
-            totalPrice+=res.getServices().stream().map(s->s.getPrice() - (s.getPrice() * fidelity.getPercentageServices() / 100)).mapToDouble(s->s).sum();
+            totalPrice +=(reservation.getRoom().getPrice() - (reservation.getRoom().getPrice() * fidelity.getPercentageRoom() / 100)) * res.getDuree();
+            totalPrice +=res.getServices().stream().map(s->s.getPrice() - (s.getPrice() * fidelity.getPercentageServices() / 100)).mapToDouble(s->s).sum();
         }
         else{
-            totalPrice+=reservation.getRoom().getPrice() * res.getDuree();
-            totalPrice+=res.getServices().stream().map(s->s.getPrice()).mapToDouble(s->s).sum();
+            totalPrice +=reservation.getRoom().getPrice() * res.getDuree();
+            totalPrice +=res.getServices().stream().map(ma.authentification.project.entities.Service::getPrice).mapToDouble(s->s).sum();
         }
         return totalPrice;
     }
