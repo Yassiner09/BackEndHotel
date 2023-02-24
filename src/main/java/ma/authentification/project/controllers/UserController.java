@@ -1,17 +1,10 @@
 package ma.authentification.project.controllers;
-
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.authentification.project.entities.Reservation;
-import ma.authentification.project.entities.Role;
 import ma.authentification.project.entities.User;
-import ma.authentification.project.services.RoleService;
 import ma.authentification.project.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +13,10 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("api/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @CrossOrigin
 public class UserController {
-    private UserService userService;
-    private RoleService roleService;
-
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @PostMapping({"/registerUser"})
     @PreAuthorize("hasRole('Admin')")
@@ -43,7 +33,6 @@ public class UserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('Admin')")
-    @Cacheable
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.findAll(), OK);
     }
@@ -60,12 +49,6 @@ public class UserController {
         return "This URL is only accessible to the user";
     }
 
-    @GetMapping("{idRole}/roles")
-    @PreAuthorize("hasRole('Admin')")
-    public ResponseEntity<List<User>> findUserByRoles(@PathVariable Integer idRole) throws Exception {
-        Role role = roleService.findByIdRole(idRole);
-        return new ResponseEntity<>(userService.findByRoles(role), OK);
-    }
 
     @GetMapping("{id}/user")
     @PreAuthorize("hasAnyRole('Admin','User')")

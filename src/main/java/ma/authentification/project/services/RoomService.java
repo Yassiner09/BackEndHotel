@@ -31,8 +31,7 @@ public class RoomService implements RoomInterface {
 
     @Override
     public List<Room> findRoomsByAvailability(Boolean availability) throws RoomException {
-        //need to specify the date
-        return roomRepository.findAllByAvailability(availability);
+        return roomRepository.findAllByAvailability(availability).orElseThrow(()->new RoomException("Room with availability: "+availability+" not found !"));
     }
 
     @Override

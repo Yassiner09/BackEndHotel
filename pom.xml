@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ma.authentification</groupId>
-	<artifactId>AuthenticationAndAuthorization</artifactId>
+	<artifactId>authentication-and-authorization</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>authenticationAndAuthorization</name>
 	<description>authenticationAndAuthorization</description>
@@ -65,11 +65,6 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.0.13.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.el</artifactId>
-			<version>3.0.0</version>
 		</dependency>
 	</dependencies>
 
